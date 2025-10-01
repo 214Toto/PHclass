@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Physiology Quiz</title>
+    <style>
+        :root {
+            --primary-color: #005b96;
+            --secondary-color: #003d66;
+            --accent-color: #4CAF50;
+            --error-color: #f44336;
+            --light-bg: #f5f9fc;
+            --card-bg: #ffffff;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 85%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        
+        .quiz-setup {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .quiz-container {
+            display: none;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .results-container {
+            display: none;
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .option-group {
+            margin-bottom: 20px;
+        }
+        
+        .option-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--secondary-color);
+        }
+        
+        .option-description {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .option-btn {
+            display: inline-block;
+            background-color: #e1e5eb;
+            color: #333;
+            padding: 10px 15px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option-btn:hover {
+            background-color: #d0d5dd;
+        }
+        
+        .option-btn.selected {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .start-btn {
+            display: block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px 25px;
+            margin: 30px auto 0;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .start-btn:hover {
+            background-color: #3e8e41;
+        }
+        
+        .timer {
+            text-align: right;
+            font-size: 1.2em;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+        
+        .timer.warning {
+            color: orange;
+        }
+        
+        .timer.danger {
+            color: var(--error-color);
+            animation: pulse 0.5s infinite alternate;
+        }
+        
+        @keyframes pulse {
+            from { opacity: 1; }
+            to { opacity: 0.5; }
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .answer-btn {
+            display: block;
+            width: 100%;
+            text-align: left;
+            background-color: #f8fafc;
+            color: #333;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .answer-btn:hover {
+            background-color: #edf4fb;
+            border-color: var(--primary-color);
+        }
+        
+        .answer-btn.selected {
+            background-color: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+        }
+        
+        .answer-btn.correct {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        
+        .answer-btn.incorrect {
+            background-color: var(--error-color);
+            color: white;
+            border-color: var(--error-color);
+        }
+        
+        .next-btn {
+            display: block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            margin: 20px 0 0 auto;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .next-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background-color: #e1e5eb;
+            border-radius: 3px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--primary-color);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        /* Score animation */
+        .score-display {
+            text-align: center;
+            margin: 30px 0;
+            position: relative;
+        }
+        
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            border-radius: 50%;
+            background: conic-gradient(var(--accent-color) 0%, var(--accent-color) 0%, #e1e5eb 0%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            animation: fillAnimation 1.5s ease-out forwards;
+        }
+        
+        @keyframes fillAnimation {
+            to {
+                background: conic-gradient(var(--accent-color) var(--percentage), #e1e5eb var(--percentage));
+            }
+        }
+        
+        .score-inner {
+            width: 160px;
+            height: 160px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-weight: bold;
+        }
+        
+        .score-value {
+            font-size: 3em;
+            color: var(--primary-color);
+            line-height: 1;
+        }
+        
+        .score-label {
+            font-size: 1.2em;
+            color: #666;
+        }
+        
+        .review-section {
+            margin-top: 40px;
+        }
+        
+        .review-item {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 6px;
+            background-color: #f8fafc;
+            border-left: 4px solid #ddd;
+        }
+        
+        .review-item.correct {
+            border-left-color: var(--accent-color);
+        }
+        
+        .review-item.incorrect {
+            border-left-color: var(--error-color);
+        }
+        
+        .review-item.unanswered {
+            border-left-color: #ff9800;
+        }
+        
+        .review-question {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+        
+        .user-answer {
+            margin: 8px 0;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #fff3e0;
+        }
+        
+        .user-answer.correct {
+            background-color: #e8f5e9;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .user-answer.incorrect {
+            background-color: #ffebee;
+            color: var(--error-color);
+        }
+        
+        .user-answer.unanswered {
+            background-color: #fff8e1;
+            color: #ff9800;
+        }
+        
+        .correct-answer {
+            margin: 8px 0;
+            padding: 8px;
+            border-radius: 4px;
+            background-color: #e8f5e9;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .explanation {
+            font-style: italic;
+            color: #666;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px dashed #ddd;
+        }
+        
+        .restart-btn {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            margin-right: 15px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .restart-btn:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .back-btn {
+            display: inline-block;
+            background-color: #666;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .back-btn:hover {
+            background-color: #444;
+        }
+        
+        .quiz-instructions {
+            background-color: #e3f2fd;
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .quiz-instructions h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+        
+        .quiz-instructions ul {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="container">
+            <h1>Physiology Quiz</h1>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Quiz Setup Section -->
+        <div class="quiz-setup" id="quizSetup">
+            <h2>Quiz Settings</h2>
+            
+            <div class="quiz-instructions">
+                <h3>How This Quiz Works</h3>
+                <ul>
+                    <li>Select your preferred time per question (or unlimited time)</li>
+                    <li>Choose when you want to see correct answers (immediately or at the end)</li>
+                    <li>After completing the quiz, you'll see detailed explanations for all questions</li>
+                    <li>You can review all questions with your answers and the correct solutions</li>
+                </ul>
+            </div>
+            
+            <div class="option-group">
+                <div class="option-title">Time per question:</div>
+                <div class="option-description">Set how much time you have for each question. Unlimited time lets you take as long as you need.</div>
+                <button class="option-btn" data-time="30">30 seconds</button>
+                <button class="option-btn" data-time="45">45 seconds</button>
+                <button class="option-btn" data-time="60">60 seconds</button>
+                <button class="option-btn selected" data-time="0">Unlimited time</button>
+            </div>
+            
+            <div class="option-group">
+                <div class="option-title">Answer feedback:</div>
+                <div class="option-description">Choose whether to see correct answers immediately after each question or only at the end of the quiz.</div>
+                <button class="option-btn selected" data-feedback="immediate">Show answers immediately</button>
+                <button class="option-btn" data-feedback="end">Show all answers at the end</button>
+            </div>
+            
+            <button class="start-btn" id="startQuiz">Start Quiz</button>
+        </div>
+        
+        <!-- Quiz Container -->
+        <div class="quiz-container" id="quizContainer">
+            <div class="timer" id="timer">Time left: --</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            
+            <div class="question">
+                <div class="question-text" id="questionText">Question text goes here</div>
+                <div class="answers" id="answers">
+                    <!-- Answers will be inserted here by JavaScript -->
+                </div>
+            </div>
+            
+            <button class="next-btn" id="nextBtn">Next Question</button>
+        </div>
+        
+        <!-- Results Container -->
+        <div class="results-container" id="resultsContainer">
+            <div class="score-display">
+                <div class="score-circle" id="scoreCircle">
+                    <div class="score-inner">
+                        <div class="score-value" id="scoreValue">0%</div>
+                        <div class="score-label">Your Score</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="quiz-summary">
+                <p>You answered <strong id="correctCount">0</strong> out of <strong id="totalQuestions">0</strong> questions correctly.</p>
+                <p id="performanceComment">Keep practicing to improve your knowledge!</p>
+            </div>
+            
+            <div class="button-group">
+                <button class="restart-btn" id="restartBtn">Restart Quiz</button>
+                <button class="back-btn" id="backBtn">Back to Quiz Portal</button>
+            </div>
+            
+            <div class="review-section" id="reviewSection">
+                <h3>Detailed Question Review</h3>
+                <p>Below you'll find each question with your answer, the correct answer, and an explanation to help you understand the concepts better.</p>
+                <!-- Review items will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz data - replace with your actual questions
+        const quizData = [
+  {
+    "question": "A ten-year-old child with aggressive behavior and poor concentration is brought with presenting complaints of joint pain and reduced urinary output. Mother gives history of self-mutilate his finger. Which of the following enzymes is likely to be deficient in this child?",
+    "answers": ["HPRTase", "Adenosine deaminase", "APRtase", "Acid maltase", "Xanthine oxidase"],
+    "correct": 0,
+    "explanation": "The clinical picture of aggressive behavior, self-mutilation (biting fingers/lips), joint pain (gout), and poor concentration, especially in a child, is classic for **Lesch-Nyhan syndrome**. This syndrome is caused by a deficiency of the enzyme **Hypoxanthine-guanine phosphoribosyltransferase (HGPRTase or HPRTase)**, which is essential for the purine salvage pathway. The marked increase in uric acid production due to the defective salvage pathway leads to the neurological, behavioral, and gout-like symptoms."
+  },
+  {
+    "question": "A 10-year-old child presents with history of rashes, self-mutilation and positive family history. Which of the following investigations do you think will be suggestive of valuable for diagnosis?",
+    "answers": ["Lead", "Alkaline phosphatase", "LDH", "Uric acid", "Urea"],
+    "correct": 3,
+    "explanation": "Given the history of **self-mutilation** and positive family history, the primary suspicion is Lesch-Nyhan syndrome (LNS). LNS is a severe X-linked recessive disorder caused by a deficiency of HGPRTase, which results in the overproduction of purines and excessive uric acid. Therefore, a significantly **elevated serum uric acid** level (**hyperuricemia**) is the most valuable and highly suggestive investigation for the diagnosis, even though definitive diagnosis requires HGPRTase assay or genetic testing."
+  },
+  {
+    "question": "A patient with increased Hypoxanthine and Xanthine in blood with hypouricemia which enzyme is deficient?",
+    "answers": ["HPRTase", "Xanthine oxidase", "Adenosine deaminase", "APRtase", "Glucose-6-phosphatase"],
+    "correct": 1,
+    "explanation": "The breakdown of purines (like Hypoxanthine and Xanthine) to the final waste product **Uric acid** is catalyzed by **Xanthine oxidase**. If this enzyme is deficient, Hypoxanthine and Xanthine will accumulate in the blood and urine, while the final product, Uric acid, will be present in low concentration (**hypouricemia**). This condition is called **Xanthinuria**."
+  },
+  {
+    "question": "Which of the following is created to provide a free 3' hydroxyl group, enabling the initiation of DNA replication?",
+    "answers": ["Single-strand binding protein", "DNA polymerase II", "DNA primer", "Replication fork", "RNA primer"],
+    "correct": 4,
+    "explanation": "DNA polymerase, the enzyme that synthesizes the new DNA strand, can only *add* nucleotides to an existing **free 3' hydroxyl (OH) group**; it cannot initiate a new strand from scratch. This initial short segment with the necessary free 3'-OH group is called a **primer**. In DNA replication, this is an **RNA primer**, which is synthesized by an enzyme called primase. DNA polymerase then uses the 3'-OH end of this RNA primer to begin adding DNA nucleotides."
+  },
+  {
+    "question": "DNA replication is semi-conservative. This means that __________.",
+    "answers": [
+      "parts from each original strand will be used as templates when creating the new double helix, resulting in a patchwork combination of both original and newly-synthesized nucleotides",
+      "both double strands have different percentages of nucleotides",
+      "both double strands have a newly created strand and an original template strand",
+      "an entirely new synthesized DNA molecule is created, while the original double helix stays together",
+      "one strand is synthesized continuously, while the other strand is synthesized discontinuously"
+    ],
+    "correct": 2,
+    "explanation": "The **semi-conservative** nature of DNA replication means that each new double helix molecule consists of one **original** parental strand (which serves as the template) and one **newly synthesized** daughter strand. This is the definition confirmed by the Meselson-Stahl experiment."
+  },
+  {
+    "question": "What is involved in formation of d-TMP from d-UMP?",
+    "answers": [
+      "$\text{N}^5,\text{N}^{10}\text{-methylene tetrahydrofolate}$",
+      "$\text{From imino folate}$",
+      "$\text{N}^5\text{ formyl folate}$",
+      "$\text{Dihydrofolate}$",
+      "$\text{Glutamine}$"
+    ],
+    "correct": 0,
+    "explanation": "The reaction to form $\text{d-TMP}$ (deoxythymidine monophosphate) from $\text{d-UMP}$ (deoxyuridine monophosphate) is catalyzed by **thymidylate synthase**. This reaction requires a one-carbon unit, which is donated by the co-factor $\text{N}^5,\text{N}^{10}\text{-methylene tetrahydrofolate}$. In the process, the folate co-factor is oxidized to $\text{dihydrofolate}$ ($\text{DHF}$)."
+  },
+  {
+    "question": "Which protein is responsible for the removal of the RNA primer from the 5' end of a lagging strand of DNA, and replacing it with DNA nucleotides?",
+    "answers": ["Topoisomerase", "DNA Polymerase I", "Primase", "DNA Polymerase III", "None of the choices"],
+    "correct": 1,
+    "explanation": "In prokaryotic (and to an extent, eukaryotic) DNA replication, **DNA Polymerase I** has a unique 5' $\\rightarrow$ 3' exonuclease activity that removes the RNA primer nucleotides. It simultaneously uses its 5' $\\rightarrow$ 3' polymerase activity to replace the gaps with deoxyribonucleotides, effectively completing the Okazaki fragments."
+  },
+  {
+    "question": "Primase is not required during DNA repair processes because of which one of the following?",
+    "answers": ["All of the primase is associated with replication origins.", "RNA would be highly mutagenic at a repair site.", "Repair DNA polymerases do not require a primer.", "Replicative DNA polymerases do not require a primer.", "DNA polymerases (both repair and replicative) can use any 3'-OH for elongation."],
+    "correct": 4,
+    "explanation": "DNA repair processes typically utilize the existing strand as a template. When a damaged region is excised, it often leaves a **3'-hydroxyl ($\text{OH}$) group** from an adjacent, intact nucleotide. Repair polymerases can use this existing free $\text{3'}-\text{OH}$ end as the starting point for elongation, meaning they do not need a new primer to be synthesized by primase."
+  },
+  {
+    "question": "During DNA replication, an enzyme called DNA helicase \"unzips\" the molecule of double-stranded DNA. What is the most likely mechanism of DNA helicase?",
+    "answers": [
+      "DNA helicase breaks down the hydrogen bonds between the purines and pyrimidines",
+      "DNA helicase breaks down the hydrogen bonds between purines and purines",
+      "DNA helicase breaks down the covalent bonds between pyrimidines and pyrimidines",
+      "DNA helicase breaks down the covalent bonds between the purines and pyrimidines",
+      "DNA helicase breaks down the hydrogen bonds between pyrimidines and pyrimidines"
+    ],
+    "correct": 0,
+    "explanation": "The two strands of the DNA double helix are held together by **hydrogen bonds** formed between complementary base pairs ($\text{A}$ with $\text{T}$, $\text{G}$ with $\text{C}$). DNA helicase acts like a wedge to disrupt these weak hydrogen bonds, separating the purine ($\text{A}, \text{G}$) and pyrimidine ($\text{T}, \text{C}$) bases on opposite strands, which allows the replication machinery to access the templates."
+  },
+  {
+    "question": "Which polymerase is involved in transcribing ribosomal RNA (except $5\text{S rRNA}$)?",
+    "answers": ["DNA polymerase $\text{V}$", "RNA polymerase $\text{III}$", "RNA polymerase $\text{IV}$", "RNA polymerase $\text{II}$", "RNA polymerase $\text{I}$"],
+    "correct": 4,
+    "explanation": "In eukaryotes, **RNA polymerase $\text{I}$** is exclusively responsible for transcribing the genes that encode the precursor of the major ribosomal RNAs ($28\text{S}$, $18\text{S}$, and $5.8\text{S}$). $\text{RNA polymerase II}$ transcribes $\text{mRNA}$, and $\text{RNA polymerase III}$ transcribes $\text{tRNA}$ and $5\text{S rRNA}$."
+  },
+  {
+    "question": "What is the role of the promoter region in the regulation of gene expression?",
+    "answers": [
+      "Recruit RNA polymerase and transcription factors to DNA",
+      "Bind negative regulators to inhibit gene expression",
+      "Alter gene expression by binding transcription factors",
+      "Allow for alternative splicing and recombination of genetic components",
+      "Promote the stability of the gene"
+    ],
+    "correct": 0,
+    "explanation": "The **promoter** is a specific DNA sequence located near the start of a gene. Its primary function is to act as the recognition site where **RNA polymerase** and necessary **transcription factors** bind to the DNA. This binding event correctly positions the polymerase to begin transcription (initiation), thereby controlling when and how often a gene is expressed."
+  },
+  {
+    "question": "Which of the following best describes distant regulatory sequences that influence gene expression?",
+    "answers": ["Promoters", "Transcriptional start sites", "Exons", "Enhancers", "Introns"],
+    "correct": 3,
+    "explanation": "**Enhancers** are DNA sequences that can be located far away (upstream, downstream, or even within an intron) from the gene they regulate. When bound by activator proteins, the DNA loops, bringing the enhancer and its bound proteins close to the promoter to greatly boost the rate of transcription (gene expression)."
+  },
+  {
+    "question": "All of the following are types of alternative RNA splicing except __________.",
+    "answers": ["exon reversal", "skipped exon", "dual splice site", "alternative $3'$ splicing", "intron removal"],
+    "correct": 0,
+    "explanation": "Alternative splicing is a process where different $\text{mRNA}$ isoforms are generated from the same primary RNA transcript by selectively including or excluding certain exons or using different splice sites. **Exon reversal** is not a known mechanism of alternative splicing. The common types are **skipped exon**, **alternative $5'$ or $3'$ splice site** usage (leading to **dual splice sites**), and intron retention. Note that **intron removal** is the definition of standard splicing, not a form of alternative splicing itself, but it can be used to describe the primary difference between intron retention (a type of alternative splicing) and constitutive splicing."
+  },
+  {
+    "question": "Chloramphenicol prevents protein translation by which of the following mechanisms?",
+    "answers": [
+      "It blocks the translocation reaction on ribosomes",
+      "It blocks the peptidyl transferase reaction on ribosomes",
+      "It blocks initiation of RNA chains by binding to RNA polymerase",
+      "It blocks the binding of aminoacyl $\text{tRNA}$ to the $\text{A}$ site of the ribosome",
+      "It blocks the binding of $\text{IF}1$ on the $\text{A}$ site of the ribosome"
+    ],
+    "correct": 1,
+    "explanation": "**Chloramphenicol** is an antibiotic that specifically inhibits the **peptidyl transferase** activity of the $\text{50S}$ ribosomal subunit in prokaryotes. This enzyme is responsible for forming the peptide bond between the amino acid carried by the $\text{tRNA}$ in the $\text{A}$ site and the growing polypeptide chain carried by the $\text{tRNA}$ in the $\text{P}$ site."
+  },
+  {
+    "question": "In prokaryotes what site on the $\text{mRNA}$ does the ribosome bind to initiate translation?",
+    "answers": [
+      "The Shine-Dalgarno sequence",
+      "The operator",
+      "The $3'$ untranslated region",
+      "The promoter",
+      "The poly adenine tail"
+    ],
+    "correct": 0,
+    "explanation": "In prokaryotes, the small ribosomal subunit ($\text{30S}$) recognizes and binds to the **Shine-Dalgarno sequence** (also known as the ribosomal binding site or $\text{RBS}$). This purine-rich sequence is located upstream of the start codon ($\text{AUG}$) and ensures the ribosome is positioned correctly to begin translation."
+  },
+  {
+    "question": "Which of the following proteins are likely to contain leucine zipper domains?",
+    "answers": [
+      "Lipases",
+      "Proteases",
+      "Transcription factors",
+      "Transmembrane proteins",
+      "Helicases"
+    ],
+    "correct": 2,
+    "explanation": "A **leucine zipper** ($\text{LZ}$) is a common structural motif found in DNA-binding proteins, particularly many types of **Transcription Factors** ($\text{TFs}$) like the $\text{Fos/Jun}$ family. The domain consists of an $\\alpha$-helix with leucine residues spaced every seven amino acids, which mediates dimerization, allowing the two protein subunits to form a structure that can clamp onto and regulate DNA."
+  },
+  {
+    "question": "When conducting a stain of chromosomes, certain regions along the chromosome will stain more darkly than the rest. This is due to the fact that these regions are more tightly condensed (heterochromatin) than the rest (euchromatin). What is the functional outcome of having one region more condensed?",
+    "answers": [
+      "Heterochromatin is transcribed at a high frequency because there are a high number of genes in a small area.",
+      "Heterochromatin unpacking requires many $\text{ATP}$ and is energetically expensive.",
+      "Heterochromatin does not contain any genes and is a structural component of the chromosome.",
+      "Heterochromatin is not transcribed/is transcribed at a lower rate because euchromatin saturates all available polymerase.",
+      "Heterochromatin is typically not transcribed/transcribed at a lower rate because the tight packing limits accessibility to polymerases."
+    ],
+    "correct": 4,
+    "explanation": "The tightly packed structure of **heterochromatin** means that the $\text{DNA}$ is largely inaccessible to the transcription machinery, including $\text{RNA}$ polymerase and transcription factors. Consequently, heterochromatin is generally transcriptionally **inactive** or transcribed at a significantly lower rate compared to the less-condensed, gene-rich **euchromatin**."
+  },
+  {
+    "question": "How many ribosomal binding sites are there and what are their functions?",
+    "answers": [
+      "There are two sites. $\text{A}$ site binds free $\text{tRNA}$ before ribosomal exit, $\text{P}$ site binds aminoacyl-$\text{tRNA}$",
+      "There are two sites. $\text{A}$ site binds free $\text{tRNA}$ before ribosomal exit, $\text{P}$ site binds peptidyl-$\text{tRNA}$",
+      "There are three sites. $\text{A}$ site binds peptidyl-$\text{tRNA}$, $\text{P}$ site binds aminoacyl-$\text{tRNA}$, $\text{E}$ site binds free $\text{tRNA}$ before ribosomal exit",
+      "There are three sites. $\text{A}$ site binds aminoacyl-$\text{tRNA}$, $\text{P}$ site binds peptidyl-$\text{tRNA}$, $\text{E}$ site binds free $\text{tRNA}$ before ribosomal exit",
+      "There are three sites. $\text{A}$ site binds free $\text{tRNA}$ before ribosomal exit, $\text{P}$ site binds aminoacyl-$\text{tRNA}$, $\text{E}$ site binds peptidyl-$\text{tRNA}$"
+    ],
+    "correct": 3,
+    "explanation": "The ribosome has **three** main binding sites for $\text{tRNA}$: the **A (Aminoacyl)** site, the **P (Peptidyl)** site, and the **E (Exit)** site. The $\text{A}$ site receives the incoming **aminoacyl-tRNA** (carrying a single amino acid). The $\text{P}$ site holds the **peptidyl-tRNA** (carrying the growing polypeptide chain). The $\text{E}$ site holds the **free/empty $\text{tRNA}$** briefly before it exits the ribosome."
+  },
+  {
+    "question": "Which of the following is not a type of modification that can occur after translation?",
+    "answers": [
+      "Proteasomal degradation",
+      "$5'$ capping",
+      "Trimming",
+      "Phosphorylation",
+      "Ubiquitination"
+    ],
+    "correct": 1,
+    "explanation": "Post-translational modifications ($\text{PTMs}$) occur on the **protein** after it has been fully translated (synthesized). $\text{Proteasomal degradation}$, $\text{Trimming}$ (of a pro-protein to an active form), $\text{Phosphorylation}$, and $\text{Ubiquitination}$ are all PTMs. **$5'$ capping** is a modification that occurs on the $\text{mRNA}$ transcript (pre-mRNA) in the nucleus, making it a **post-transcriptional modification**, not a post-translational modification."
+  },
+  {
+    "question": "In which of the following organelles does the initial linkage of a sugar for post-translation modification $\text{N}$-linked glycosylation most commonly occur?",
+    "answers": [
+      "Mitochondria",
+      "Nucleus",
+      "Endoplasmic reticulum",
+      "Golgi apparatus",
+      "Lysosomes"
+    ],
+    "correct": 2,
+    "explanation": "The initial step of $\text{N}$-linked glycosylation (the addition of the pre-assembled oligosaccharide core to an asparagine residue of a newly synthesized polypeptide) occurs on the luminal side of the **Endoplasmic Reticulum (ER)**. Further processing and modification of the sugar chain then takes place in the $\text{Golgi}$ apparatus."
+  },
+  {
+    "question": "Researchers first identified parts of genes that are spliced out of $\text{mRNA}$ and not included in the final protein product by observing that not all of the original gene hybridizes to the cognate $\text{mRNA}$. What are these regions called?",
+    "answers": [
+      "Micro $\text{RNAs}$",
+      "Introns",
+      "Intergenic regions",
+      "Exons",
+      "Internal transcribed spacers"
+    ],
+    "correct": 1,
+    "explanation": "The regions of a eukaryotic gene that are transcribed into $\text{pre-mRNA}$ but are subsequently removed (spliced out) before the $\text{mRNA}$ leaves the nucleus are called **Introns** (intervening sequences). The remaining sequences that are 'expressed' are called $\text{Exons}$."
+  },
+  {
+    "question": "What are $\text{snRNPs}$ (small nuclear ribonucleic particles)?",
+    "answers": [
+      "$\text{RNA}$ molecules that convey genetic information from $\text{DNA}$ to the ribosome",
+      "$\text{RNA}$ protein complexes that combine with $\text{pre-mRNA}$ and other proteins to form a spliceosome",
+      "$\text{RNA}$ component of the ribosome, essential for protein synthesis",
+      "$\text{RNA}$ molecules that serve as the link between the nucleotide sequence of nucleic acids and the amino acid sequence of proteins",
+      "$\text{RNAs}$ having catalytic activities"
+    ],
+    "correct": 1,
+    "explanation": "**$\text{snRNPs}$** are complexes composed of one or more small nuclear $\text{RNA}$s ($\text{snRNA}$s) and proteins. They recognize the splice sites on the $\text{pre-mRNA}$ and, along with many other proteins, assemble to form the **spliceosome**, the molecular machine responsible for removing $\text{introns}$ from $\text{pre-mRNA}$."
+  },
+  {
+    "question": "Inducible operons are bound by a repressor and turned off under normal conditions. How are these operons turned on?",
+    "answers": [
+      "An activator protein displaces the repressor on the operator",
+      "An inducer molecule binds to and inactivates the repressor",
+      "The transcription of the repressor protein is inactivated",
+      "An inducer molecule competes with the repressor for binding to the operator",
+      "A second repressor protein binds to and represses the repressor"
+    ],
+    "correct": 1,
+    "explanation": "In an **inducible operon** (like the $\text{lac}$ operon), the operon is normally 'off' due to an active repressor bound to the operator. To turn it 'on', an **inducer** molecule (e.g., allolactose for the $\text{lac}$ operon) must bind to the repressor protein. This binding causes a change in the repressor's conformation, making it unable to bind to the $\text{DNA}$ operator site, thus inactivating the repressor and allowing transcription to proceed."
+  },
+  {
+    "question": "Regulatory proteins turn transcription off by binding to a site rapidly at the front of the promoter and many times even overlaps the promoter, this site is the __________.",
+    "answers": [
+      "regulatory site",
+      "operator site",
+      "suppressor site",
+      "transcriptional control site",
+      "enhancer site"
+    ],
+    "correct": 1,
+    "explanation": "In prokaryotic gene regulation, the site where a repressor protein binds to inhibit the transcription process is the **operator site**. This site is typically located within or immediately downstream of the promoter, allowing the bound repressor to physically block $\text{RNA}$ polymerase from initiating transcription."
+  },
+  {
+    "question": "What would happen if the operator sequence of the $\text{trp}$ operon contained a mutation that prevented the repressor protein from binding to the operator?",
+    "answers": [
+      "In the absence of tryptophan, the genes $\text{trpA}-\text{E}$ will not be transcribed.",
+      "In the absence of tryptophan, only genes $\text{trpE}$ and $\text{trpD}$ will be transcribed.",
+      "In the presence of tryptophan, the genes $\text{trpA}-\text{E}$ will be transcribed.",
+      "In the presence of tryptophan, the $\text{trpE}$ gene will not be transcribed.",
+      "In the presence of tryptophan, leader peptide gene will not be transcribed."
+    ],
+    "correct": 2,
+    "explanation": "The $\text{trp}$ operon is a **repressible** operon, which is typically 'on' but is turned 'off' by the binding of a repressor protein when tryptophan is abundant. The repressor can only bind when activated by tryptophan. If the **operator is mutated** so the repressor **cannot bind**, the repressor system is broken. The operon will always be 'on' (constitutively expressed), regardless of whether tryptophan is present or absent. Thus, the $\text{trp}$ genes ($\text{trpA}-\text{E}$) will be transcribed **even in the presence of tryptophan** (when they normally should be turned off)."
+  }
+
+];
+
+        
+        // DOM elements
+        const quizSetup = document.getElementById('quizSetup');
+        const quizContainer = document.getElementById('quizContainer');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const questionText = document.getElementById('questionText');
+        const answersContainer = document.getElementById('answers');
+        const nextBtn = document.getElementById('nextBtn');
+        const timerElement = document.getElementById('timer');
+        const progressBar = document.getElementById('progress');
+        const startBtn = document.getElementById('startQuiz');
+        const scoreValue = document.getElementById('scoreValue');
+        const correctCount = document.getElementById('correctCount');
+        const totalQuestions = document.getElementById('totalQuestions');
+        const performanceComment = document.getElementById('performanceComment');
+        const reviewSection = document.getElementById('reviewSection');
+        const restartBtn = document.getElementById('restartBtn');
+        const backBtn = document.getElementById('backBtn');
+        const scoreCircle = document.getElementById('scoreCircle');
+        
+        // Quiz variables
+        let currentQuestion = 0;
+        let score = 0;
+        let timer;
+        let timePerQuestion = 0; // 0 means unlimited
+        let feedbackMode = 'immediate'; // 'immediate' or 'end'
+        let userAnswers = [];
+        let timeLeft = 0;
+        
+        // Initialize option buttons
+        const timeButtons = document.querySelectorAll('[data-time]');
+        const feedbackButtons = document.querySelectorAll('[data-feedback]');
+        
+        timeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                timeButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
+        
+        feedbackButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                feedbackButtons.forEach(btn => btn.classList.remove('selected'));
+                button.classList.add('selected');
+            });
+        });
+        
+        // Start quiz
+        startBtn.addEventListener('click', () => {
+            timePerQuestion = parseInt(document.querySelector('[data-time].selected').dataset.time);
+            feedbackMode = document.querySelector('[data-feedback].selected').dataset.feedback;
+            
+            quizSetup.style.display = 'none';
+            quizContainer.style.display = 'block';
+            
+            loadQuestion();
+        });
+        
+        // Load a question
+        function loadQuestion() {
+            // Reset state
+            answersContainer.innerHTML = '';
+            nextBtn.style.display = 'none';
+            
+            // Update progress
+            const progress = ((currentQuestion) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            
+            // Set question text
+            questionText.textContent = `${currentQuestion + 1}. ${quizData[currentQuestion].question}`;
+            
+            // Create answer buttons
+            quizData[currentQuestion].answers.forEach((answer, index) => {
+                const button = document.createElement('button');
+                button.classList.add('answer-btn');
+                button.textContent = answer;
+                button.dataset.index = index;
+                button.addEventListener('click', selectAnswer);
+                answersContainer.appendChild(button);
+            });
+            
+            // Start timer if needed
+            if (timePerQuestion > 0) {
+                timeLeft = timePerQuestion;
+                updateTimer();
+                timer = setInterval(updateTimer, 1000);
+            } else {
+                timerElement.textContent = 'Take your time';
+            }
+        }
+        
+        // Update timer display
+        function updateTimer() {
+            timerElement.textContent = `Time left: ${timeLeft}s`;
+            
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timerElement.textContent = "Time's up!";
+                handleTimeOut();
+                return;
+            }
+            
+            // Visual warnings
+            if (timeLeft <= 10) {
+                timerElement.classList.add('danger');
+            } else if (timeLeft <= timePerQuestion / 2) {
+                timerElement.classList.add('warning');
+            }
+            
+            timeLeft--;
+        }
+        
+        // Handle timeout
+        function handleTimeOut() {
+            // Disable all answer buttons
+            const answerButtons = document.querySelectorAll('.answer-btn');
+            answerButtons.forEach(button => {
+                button.disabled = true;
+            });
+            
+            // Mark correct answer if in immediate feedback mode
+            if (feedbackMode === 'immediate') {
+                const correctIndex = quizData[currentQuestion].correct;
+                answerButtons[correctIndex].classList.add('correct');
+            }
+            
+            // Store user answer (null for timeout)
+            userAnswers.push({
+                question: quizData[currentQuestion].question,
+                userAnswer: null,
+                correctAnswer: quizData[currentQuestion].correct,
+                answers: [...quizData[currentQuestion].answers],
+                explanation: quizData[currentQuestion].explanation
+            });
+            
+            // Show next button or proceed automatically
+            if (feedbackMode === 'immediate') {
+                nextBtn.style.display = 'block';
+            } else {
+                setTimeout(() => {
+                    goToNextQuestion();
+                }, 1500);
+            }
+        }
+        
+        // Select answer
+        function selectAnswer(e) {
+            if (timePerQuestion > 0) {
+                clearInterval(timer);
+            }
+            
+            const selectedButton = e.target;
+            const selectedIndex = parseInt(selectedButton.dataset.index);
+            const correctIndex = quizData[currentQuestion].correct;
+            
+            // Disable all answer buttons
+            const answerButtons = document.querySelectorAll('.answer-btn');
+            answerButtons.forEach(button => {
+                button.disabled = true;
+            });
+            
+            // Store user answer
+            userAnswers.push({
+                question: quizData[currentQuestion].question,
+                userAnswer: selectedIndex,
+                correctAnswer: correctIndex,
+                answers: [...quizData[currentQuestion].answers],
+                explanation: quizData[currentQuestion].explanation
+            });
+            
+            // Check if correct
+            const isCorrect = selectedIndex === correctIndex;
+            
+            if (isCorrect) {
+                score++;
+                selectedButton.classList.add('correct');
+            } else {
+                selectedButton.classList.add('incorrect');
+                if (feedbackMode === 'immediate') {
+                    answerButtons[correctIndex].classList.add('correct');
+                }
+            }
+            
+            // Show next button or proceed automatically
+            if (feedbackMode === 'immediate') {
+                nextBtn.style.display = 'block';
+            } else {
+                setTimeout(() => {
+                    goToNextQuestion();
+                }, isCorrect ? 1000 : 1500);
+            }
+        }
+        
+        // Next question
+        nextBtn.addEventListener('click', goToNextQuestion);
+        
+        function goToNextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+                timerElement.classList.remove('warning', 'danger');
+            } else {
+                showResults();
+            }
+        }
+        
+        // Show results
+        function showResults() {
+            quizContainer.style.display = 'none';
+            resultsContainer.style.display = 'block';
+            
+            // Calculate score
+            const percentage = Math.round((score / quizData.length) * 100);
+            scoreValue.textContent = `${percentage}%`;
+            correctCount.textContent = score;
+            totalQuestions.textContent = quizData.length;
+            
+            // Set performance comment
+            if (percentage >= 90) {
+                performanceComment.textContent = "Excellent! You've demonstrated mastery of this physiology topic.";
+            } else if (percentage >= 75) {
+                performanceComment.textContent = "Very good! You have a strong understanding of most concepts.";
+            } else if (percentage >= 60) {
+                performanceComment.textContent = "Good effort! Review the explanations below to strengthen your knowledge.";
+            } else if (percentage >= 40) {
+                performanceComment.textContent = "Keep practicing! Focus on the explanations to improve your understanding.";
+            } else {
+                performanceComment.textContent = "Use this as a learning opportunity. Study the explanations carefully.";
+            }
+            
+            // Set score circle animation
+            scoreCircle.style.setProperty('--percentage', `${percentage}%`);
+            
+            // Show review section
+            reviewSection.innerHTML = `
+                <h3>Detailed Question Review</h3>
+                <p>Review all questions with your answers, correct solutions, and detailed explanations:</p>
+            `;
+            
+            userAnswers.forEach((item, index) => {
+                const isCorrect = item.userAnswer === item.correctAnswer;
+                const isUnanswered = item.userAnswer === null;
+                
+                const reviewItem = document.createElement('div');
+                reviewItem.classList.add('review-item');
+                if (isCorrect) reviewItem.classList.add('correct');
+                else if (isUnanswered) reviewItem.classList.add('unanswered');
+                else reviewItem.classList.add('incorrect');
+                
+                // User answer display
+                let userAnswerDisplay = '';
+                if (isUnanswered) {
+                    userAnswerDisplay = `
+                        <div class="user-answer unanswered">
+                            <strong>You didn't answer this question</strong> (time ran out)
+                        </div>
+                    `;
+                } else {
+                    userAnswerDisplay = `
+                        <div class="user-answer ${isCorrect ? 'correct' : 'incorrect'}">
+                            <strong>Your answer:</strong> ${item.answers[item.userAnswer]}
+                            ${isCorrect ? ' (Correct)' : ' (Incorrect)'}
+                        </div>
+                    `;
+                }
+                
+                // Correct answer display (always show in review)
+                const correctAnswerDisplay = `
+                    <div class="correct-answer">
+                        <strong>Correct answer:</strong> ${item.answers[item.correctAnswer]}
+                    </div>
+                `;
+                
+                reviewItem.innerHTML = `
+                    <div class="review-question">${index + 1}. ${item.question}</div>
+                    ${userAnswerDisplay}
+                    ${correctAnswerDisplay}
+                    <div class="explanation">
+                        <strong>Explanation:</strong> ${item.explanation}
+                    </div>
+                `;
+                
+                reviewSection.appendChild(reviewItem);
+            });
+        }
+        
+        // Restart quiz
+        restartBtn.addEventListener('click', () => {
+            // Reset variables
+            currentQuestion = 0;
+            score = 0;
+            userAnswers = [];
+            
+            // Hide results, show quiz setup
+            resultsContainer.style.display = 'none';
+            quizSetup.style.display = 'block';
+        });
+        
+        // Back to portal
+        backBtn.addEventListener('click', () => {
+            // In a real implementation, this would link back to your portal page
+            alert("This would return to the main quiz portal page in a full implementation.");
+        });
+    </script>
+</body>
+</html>
