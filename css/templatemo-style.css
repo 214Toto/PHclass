@@ -26,13 +26,13 @@ https://templatemo.com/tm-516-known
   }
 
   h1 {
-    color: #252525;
+    color: #a69797;
     font-size: 3em;
     line-height: normal;
   }
 
   h2 {
-    color: #353535;
+    color: #bfa4a4;
     font-size: 2em;
     padding-bottom: 10px;
   }
@@ -44,11 +44,11 @@ https://templatemo.com/tm-516-known
 
   h3,
   h3 a {
-    color: #454545;
+    color: #3ea77d;
   }
 
   p {
-    color: #000000;
+    color: #ffffff;
     font-size: 16px;
     font-weight: normal;
     line-height: 24px;
@@ -428,6 +428,10 @@ https://templatemo.com/tm-516-known
 
   .home-slider .item-third {
     background-image: url(../images/course-03.jpg);
+  }
+
+  .home-slider:hover {
+    cursor: pointer;
   }
 
 
