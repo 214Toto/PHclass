@@ -26,10 +26,31 @@ https://templatemo.com/tm-516-known
      <link rel="stylesheet" href="css/templatemo-style.css">
 
 <style>
+
+          :root {
+               --primary: #2b7a78;
+               --secondary: #afc4c4;
+               --accent: #3aafa9;
+               --dark: #17252a;
+               --light: #f8f9fa;
+          }
+
+          .start {
+               font-size: 2.35rem;
+               font-weight: 700;
+          }
+
+          .quotes {
+               color: #0f172a;
+          }
+
           /* Dark Theme Base */
           body {
-               background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-               color: #e2e8f0;
+               /* background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); */
+               /* color: #e2e8f0; */
+               background-color: #212c31;
+            color: #333;
+            line-height: 1.6;
           }
 
           /* Enhanced Course Cards */
@@ -47,7 +68,7 @@ https://templatemo.com/tm-516-known
                display: flex;
                flex-direction: column;
                align-items: center;
-               background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+               background: linear-gradient(135deg, var(--dark), var(--primary), var(--dark));
                padding: 28px 24px 24px 24px;
                border-radius: 18px;
                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 1.5px 6px rgba(0, 0, 0, 0.2);
@@ -65,13 +86,13 @@ https://templatemo.com/tm-516-known
                left: 0;
                right: 0;
                height: 4px;
-               background: linear-gradient(90deg, #6366f1 0%, #3b82f6 50%, #8b5cf6 100%);
+               background: linear-gradient(90deg, var(--primary), var(--accent), var(--primary));
           }
 
           .course-card:hover {
                transform: translateY(-8px) scale(1.025);
                box-shadow: 0 16px 40px rgba(99, 102, 241, 0.2), 0 2px 8px rgba(99,102,241,0.15);
-               border-color: #6366f1;
+               border-color: #4ee6d4;
           }
 
           .course-card img {
@@ -80,7 +101,7 @@ https://templatemo.com/tm-516-known
                object-fit: cover;
                border-radius: 50%;
                margin-bottom: 18px;
-               border: 3px solid #6366f1;
+               border: 3px solid var(--accent);
                box-shadow: 0 2px 12px rgba(99,102,241,0.2);
                background: #1e293b;
           }
@@ -102,7 +123,7 @@ https://templatemo.com/tm-516-known
                border: none;
                border-radius: 6px;
                cursor: pointer;
-               background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+               background: linear-gradient(90deg, var(--dark), var(--primary), var(--dark));
                color: #fff;
                font-weight: 600;
                box-shadow: 0 2px 8px rgba(99,102,241,0.2);
@@ -110,7 +131,7 @@ https://templatemo.com/tm-516-known
           }
 
           .course-card .button:hover {
-               background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+               background: linear-gradient(90deg, var(--primary), var(--dark), var(--primary));
                box-shadow: 0 4px 16px rgba(59,130,246,0.3);
                transform: translateY(-2px);
           }
@@ -130,7 +151,7 @@ https://templatemo.com/tm-516-known
                z-index: 1000;
                display: none;
                animation: modalPop 0.35s cubic-bezier(.4,2,.6,1);
-               border: 2px solid #6366f1;
+               border: 2px solid var(--primary);
           }
 
           @keyframes modalPop {
@@ -158,7 +179,7 @@ https://templatemo.com/tm-516-known
                text-align: center;
                margin-top: 1.5rem;
                padding: 12px 0;
-               background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+               background: linear-gradient(90deg, var(--primary) 0%, var(--dark) 100%);
                color: #fff;
                border: none;
                border-radius: 6px;
@@ -170,7 +191,7 @@ https://templatemo.com/tm-516-known
           }
 
           .modal .close:hover {
-               background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+               background: linear-gradient(90deg, var(--dark) 0%, var(--primary) 100%);
                box-shadow: 0 4px 16px rgba(59,130,246,0.3);
                transform: translateY(-2px);
           }
@@ -186,7 +207,7 @@ https://templatemo.com/tm-516-known
 
           .popup-buttons button {
                padding: 10px 15px;
-               background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+               background: linear-gradient(90deg, var(--primary) 0%, var(--dark) 100%);
                color: white;
                border: none;
                border-radius: 6px;
@@ -197,7 +218,7 @@ https://templatemo.com/tm-516-known
           }
 
           .popup-buttons button:hover {
-               background: linear-gradient(90deg, #3b82f6 0%, #6366f1 100%);
+               background: linear-gradient(90deg, var(--dark) 0%, var(--primary) 100%);
                box-shadow: 0 2px 8px rgba(99,102,241,0.3);
                transform: translateY(-2px);
           }
@@ -225,7 +246,7 @@ https://templatemo.com/tm-516-known
           }
 
           .hey1 span, .hey2 span, .hey3 span {
-               background: linear-gradient(90deg, #6366f1 0%, #3b82f6 100%);
+               background: linear-gradient(90deg, var(--primary) 0%, var(--dark) 100%);
                color: white;
                padding: 8px 15px;
                border-radius: 20px;
@@ -234,7 +255,9 @@ https://templatemo.com/tm-516-known
 
           /* Enhanced Navigation */
           .navbar {
-               background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important;
+            background: linear-gradient(135deg, var(--dark), var(--primary));
+
+               /* background: linear-gradient(135deg, #1e293b 0%, #334155 100%) !important; */
                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
           }
 
@@ -243,7 +266,7 @@ https://templatemo.com/tm-516-known
           }
 
           .nav li a:hover {
-               color: #6366f1 !important;
+               color: var(--primary) !important;
           }
 
           /* Enhanced Home Section */
@@ -257,7 +280,8 @@ https://templatemo.com/tm-516-known
 
           /* Enhanced About Section */
           .about-info {
-               background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+               background-color: var(--dark);
+               /* background: linear-gradient(135deg, #1e293b 0%, #334155 100%); */
                border-radius: 12px;
                padding: 30px;
                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -266,7 +290,8 @@ https://templatemo.com/tm-516-known
 
           /* Enhanced Team Section */
           .team-thumb {
-               background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+               background-color: var(--dark);
+               /* background: linear-gradient(135deg, #1e293b 0%, #334155 100%); */
                border-radius: 12px;
                overflow: hidden;
                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -280,7 +305,8 @@ https://templatemo.com/tm-516-known
 
           /* Enhanced Courses Section */
           .courses-thumb {
-               background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+               background-color: var(--primary);
+               /* background: linear-gradient(135deg, #1e293b 0%, #334155 100%); */
                border-radius: 12px;
                overflow: hidden;
                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -294,11 +320,13 @@ https://templatemo.com/tm-516-known
 
           /* Enhanced Testimonial Section */
           #testimonial {
-               background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+               background-color: var(--primary);
+               /* background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); */
           }
 
           .item {
-               background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+               background-color: var(--primary);
+               /* background: linear-gradient(135deg, #1e293b 0%, #334155 100%); */
                border-radius: 12px;
                padding: 20px;
                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
@@ -308,18 +336,20 @@ https://templatemo.com/tm-516-known
 
           /* Enhanced Contact Section */
           #contact {
-               background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+               background-color: var(--dark);
+               /* background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); */
           }
 
           .form-control {
-               background: #334155;
+               background-color: var(--primary);
+               /* background: #334155; */
                border: 1px solid #475569;
                color: #e2e8f0;
           }
 
           .form-control:focus {
                background: #475569;
-               border-color: #6366f1;
+               border-color: var(--primary);
                color: #e2e8f0;
                box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25);
           }
@@ -376,12 +406,12 @@ https://templatemo.com/tm-516-known
           }
 
           ::-webkit-scrollbar-thumb {
-               background: linear-gradient(180deg, #6366f1 0%, #3b82f6 100%);
+               background: linear-gradient(180deg, var(--primary) 0%, var(--dark) 100%);
                border-radius: 10px;
           }
 
           ::-webkit-scrollbar-thumb:hover {
-               background: linear-gradient(180deg, #3b82f6 0%, #6366f1 100%);
+               background: linear-gradient(180deg, var(--dark) 0%, var(--primary) 100%);
           }
      </style>
 </head>
@@ -453,7 +483,7 @@ https://templatemo.com/tm-516-known
                               <div class="caption">
                                    <div class="container">
                                         <div class="col-md-6 col-sm-12">
-                                             <h1>Start your journey with our practical courses</h1>
+                                             <h1 class="start">Start your journey with our practical courses</h1>
                                              <h3>Our online courses are built in partnership with technology leaders and are designed to meet Academic demands.</h3>
                                              <a href="#courses" class="section-btn btn btn-default smoothScroll">Take a course</a>
                                         </div>
@@ -536,7 +566,7 @@ https://templatemo.com/tm-516-known
 
                     <div class="col-md-6 col-sm-12">
                          <div class="about-info">
-                              <h2>Start your journey to a better life with online practical courses</h2>
+                              <h1 class="start" >Start your journey to a better life with online practical courses</h1>
 
                               <figure>
                                    <span><i class="fa fa-users"></i></span>
@@ -563,7 +593,15 @@ https://templatemo.com/tm-516-known
                               </figure>
 
 
-                              <div class="containerz col-md-offset-1 col-md-4 col-sm-12" id="main-container">
+                    
+                         
+
+                         </div>
+
+                    </div>
+
+                    <div class="col-md-offset-1 col-md-4 col-sm-12">
+                         <div class="containerz col-md-offset-1 col-md-4 col-sm-12" id="main-container">
                                    <!-- Course 1 -->
                                    <div class="course-card">
                                         <img src="images/Biochem.png" alt="Anatomy Course">
@@ -637,28 +675,7 @@ https://templatemo.com/tm-516-known
                                         </div>
                                    <button class="close" id="start-close-3">Close</button>
                               </div>
-                         
-
-                         </div>
-
                     </div>
-
-                    <!-- <div class="col-md-offset-1 col-md-4 col-sm-12">
-                         <div class="entry-form">
-                              <form action="https://formsubmit.co/el/sodiyi" method="post">
-                                   <h2>Signup today</h2>
-                                   <img width="100%" height="100%" src="output (30).jpg" alt="">
-
-                                   <input type="text" name="name" class="form-control" placeholder="Full name" required="">
-
-                                   <input type="email" name="email" class="form-control" placeholder="Your email address" required="">
-
-                                   <input type="password" name="password" class="form-control" placeholder="Your password" required="">
-                                   
-                                   <button class="submit-btn form-control" id="form-submit"><a href="https://wa.me/+260965091047?text=Hello%2C%20I%20need%20help%21" target="_blank"></a> Send Me a Message </button>
-                              </form>
-                         </div>
-                    </div> -->
 
                </div>
           </div>
@@ -672,14 +689,14 @@ https://templatemo.com/tm-516-known
 
                     <div class="col-md-12 col-sm-12">
                          <div class="section-title">
-                              <h2> Hey There !! <small>Meet the Doctor in the making </small></h2>
+                              <h1 class="start" > Hey There !! <small>Meet the Doctor in the making </small></h1>
                          </div>
                     </div>
 
                     <div class="col-md-3 col-sm-6">
                          <div class="team-thumb">
                               <div class="team-image">
-                                   <img src="img/me2.jpg" class="img-responsive" alt="">
+                                   <img src="images/boy.jpg" class="img-responsive" alt="">
                               </div>
                               <div class="team-info">
                                    <h3> Toto Kapanga </h3>
@@ -957,7 +974,7 @@ https://templatemo.com/tm-516-known
                                              <h4>Bob Musemeka</h4>
                                              <span> Professor </span>
                                         </div>
-                                        <p> The only place where Success comes before work is in the Dictionary !</p>
+                                        <p class="quotes"> The only place where Success comes before work is in the Dictionary !</p>
                                         <div class="tst-rating">
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
@@ -977,7 +994,7 @@ https://templatemo.com/tm-516-known
                                              <h4>Mike Mwape</h4>
                                              <span> TGM </span>
                                         </div>
-                                        <p>Its not about how bad you want it. Its about how hard you are willing to work for it.</p>
+                                        <p class="quotes" >Its not about how bad you want it. Its about how hard you are willing to work for it.</p>
                                         <div class="tst-rating">
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
@@ -995,7 +1012,7 @@ https://templatemo.com/tm-516-known
                                              <h4>Charles Mwanza</h4>
                                              <span> Dr. Mwanza </span>
                                         </div>
-                                        <p> Don't watch the clock; Do what it does. Keep going.</p>
+                                        <p class="quotes" > Don't watch the clock; Do what it does. Keep going.</p>
                                         <div class="tst-rating">
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
@@ -1014,7 +1031,7 @@ https://templatemo.com/tm-516-known
                                              <h4>Prince Fwalanga</h4>
                                              <span>Fwalanga 1zm</span>
                                         </div>
-                                        <p>Success is the sum of small efforts, repeat day in and day out.</p>
+                                        <p class="quotes" >Success is the sum of small efforts, repeat day in and day out.</p>
                                         <div class="tst-rating">
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
@@ -1033,7 +1050,7 @@ https://templatemo.com/tm-516-known
                                              <h4> Danny Kasambala </h4>
                                              <span> Super Doc - Pablo </span>
                                         </div>
-                                        <p>The difference between ordinary and extraordinary is that little extra.</p>
+                                        <p class="quotes" >The difference between ordinary and extraordinary is that little extra.</p>
                                         <div class="tst-rating">
                                              <i class="fa fa-star"></i>
                                              <i class="fa fa-star"></i>
