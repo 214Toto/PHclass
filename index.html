@@ -1072,32 +1072,74 @@ https://templatemo.com/tm-516-known
           <div class="container">
                <div class="row">
 
-                    <div class="col-md-6 col-sm-12">
-                         <form id="contact-form" role="form" action="" method="post">
-                              <div class="section-title">
-                                   <h2>Contact us <small>we love conversations. let us talk!</small></h2>
+                    <div class="col-md-8 col-sm-12">
+                         <div class="section-title">
+                              <h2> Pending Assignment ( MBChB ) <small>listen or download the assignment materials</small></h2>
+                         </div>
+
+                         <div class="audio-panel" style="background:linear-gradient(135deg,var(--dark),#0e2226);border-radius:12px;padding:18px;color:#e6eef0;border:1px solid #274044;">
+                              <h3 style="margin-top:0;margin-bottom:8px;color:var(--accent)">Assignment: Amino Acids</h3>
+                              <p style="color:var(--secondary);margin-bottom:12px">Play the audio below for the assignment instructions. You can download the audio or the assignment PDF using the buttons on the right.</p>
+
+                              <div class="audio-controls" style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+                                   <audio id="assignmentAudio" controls preload="none" style="width:100%;max-width:640px;background:#071018;border-radius:8px;padding:6px;">
+                                        <source src="assignment.mp3" type="audio/mpeg">
+                                        Your browser does not support the audio element.
+                                   </audio>
+
+                                   <div style="min-width:180px;display:flex;flex-direction:column;gap:8px;margin-left:auto;">
+                                        <a href="Amino_Acids.m4a" download="Assignment-Audio.mp3" class="btn" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--light);border:1px solid rgba(255,255,255,0.06);">
+                                             <i class="fa fa-download"></i> Download audio
+                                        </a>
+                                        <a href="Amino acids (Njunju) Totoz Collection.pdf" download="Assignment.pdf" class="btn btn-default" style="display:inline-flex;align-items:center;gap:8px;background:transparent;color:var(--light);border:1px solid rgba(255,255,255,0.06);">
+                                             <i class="fa fa-file-pdf-o"></i> Download PDF
+                                        </a>
+                                   </div>
                               </div>
 
-                              <div class="col-md-12 col-sm-12">
-                                   <input type="text" class="form-control" placeholder="Enter full name" name="name" required="">
-                    
-                                   <input type="email" class="form-control" placeholder="Enter email address" name="email" required="">
-
-                                   <textarea class="form-control" rows="6" placeholder="Tell us about your message" name="message" required=""></textarea>
+                              <div style="margin-top:12px;color:var(--secondary);font-size:0.95rem;">
+                                   <strong>Notes:</strong> The audio is ~5 mins. PDF includes questions and submission instructions. Files stored in /media — update paths if you keep them elsewhere.
                               </div>
-
-                              <div class="col-md-4 col-sm-12">
-                                   <input type="submit" class="form-control" name="send message" value="Send Message">
-                              </div>
-
-                         </form>
-                    </div>
-
-                    <div class="col-md-6 col-sm-12">
-                         <div class="contact-image">
-                              <img style="border-radius: 6px;" src="images/logo.jpg" class="img-responsive" alt="ToToZ Collection">
                          </div>
                     </div>
+
+                    <!-- <div class="col-md-4 col-sm-12">
+                         <div class="paper-card" style="background:linear-gradient(180deg,#0f1720,#071016);color:#dbeafe;border-radius:12px;padding:16px;border:1px solid rgba(255,255,255,0.03);">
+                              <div class="paper-meta" style="align-items:flex-start;">
+                                   <i class="fa fa-file-audio-o" style="font-size:28px;color:var(--accent);margin-right:10px"></i>
+                                   <div>
+                                        <h4 style="margin:0;color:var(--light)">Assignment resources</h4>
+                                        <p style="margin:6px 0 0;color:var(--secondary)">Audio instruction + written brief. Submit via the course portal or email.</p>
+                                   </div>
+                              </div>
+
+                              <hr style="border-color:rgba(255,255,255,0.03);margin:12px 0;">
+
+                              <div style="display:flex;flex-direction:column;gap:8px;">
+                                   <div class="resource-row" style="border-bottom:none;padding:6px 0;">
+                                        <div style="display:flex;align-items:center;gap:10px;">
+                                             <div class="res-icon pdf" style="width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="fa fa-file-pdf-o"></i></div>
+                                             <div>
+                                                  <div class="title" style="font-weight:700;color:var(--light)">Assignment brief (PDF)</div>
+                                                  <div class="muted" style="color:var(--secondary)">PDF • 2 pages</div>
+                                             </div>
+                                        </div>
+                                   </div>
+
+                                   <div class="resource-row" style="border-bottom:none;padding:6px 0;">
+                                        <div style="display:flex;align-items:center;gap:10px;">
+                                             <div class="res-icon audio" style="width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center"><i class="fa fa-headphones"></i></div>
+                                             <div>
+                                                  <div class="title" style="font-weight:700;color:var(--light)">Assignment audio</div>
+                                                  <div class="muted" style="color:var(--secondary)">MP3 • ~5 min</div>
+                                             </div>
+                                        </div>
+                                   </div>
+
+                                   <a href="submissions.html" class="btn" style="margin-top:8px;align-self:flex-start;"><i class="fa fa-upload"></i> Submit Assignment</a>
+                              </div>
+                         </div>
+                    </div> -->
 
                </div>
           </div>
@@ -1184,6 +1226,15 @@ https://templatemo.com/tm-516-known
      <script src="js/custom.js"></script>
 
      <script>
+
+          document.addEventListener('click', function (e) {
+          if (e.target.closest('a[download]')) {
+               const file = e.target.closest('a[download]').getAttribute('download');
+               // small visal confirmation (non-blocking)
+               console.log('Downloading:', file);
+               }
+          });
+
           // Modal Toggle Logic for Course 1
           const aboutCourse1 = document.getElementById('about-course-1');
           const startCourse1 = document.getElementById('start-course-1');
